@@ -17,10 +17,17 @@ async function run(){
         client.connect();
         const topicCollection = client.db("voleenter").collection("volenteer-activities");
         
+        //load all voleenr=teer topics
         app.get('/volenteerTopics', async (req, res)=>{
-            const result = await topicCollection.find({});
-            const topics = await result.toArray();
+            const result = topicCollection.find({});
+            const topics = await result.skip(req.query.page*8).limit(8).toArray();
             res.send(topics);
+        });
+        
+        // collection qauntity
+        app.get('/dataQuantity', async (req, res)=> {
+            const result = await topicCollection.countDocuments();
+            res.send({result});
         })
         
     }
