@@ -81,7 +81,15 @@ async function run() {
       res.send(result);
     });
 
-    //load selevted topics
+    //delete a data from selected topics
+    app.delete('/delete/:topicId', async (req, res)=>{
+      const id = req.params.topicId;
+      const query = { _id: ObjectId(id) };
+      const result = await selectedTopicCollection.deleteOne(query);
+      res.send(result);
+    })
+    
+    //load selected topics
     app.get("/selectedtopics", verifyJWT, async (req, res) => {
       const email = req.query.email;
       const query = { email };
